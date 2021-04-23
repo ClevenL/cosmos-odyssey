@@ -8,6 +8,8 @@ const cors = require('cors')
 const priceListRoutes = require('./routes/api/priceLists')
 const reservationRoutes = require('./routes/api/reservations')
 
+const priceListHandler = require('./utils/priceListHandler')
+
 app.use(cors())
 app.use(express.json())
 
@@ -24,12 +26,7 @@ mongoose.connect(mongoURI, {
 app.use('/api/priceLists', priceListRoutes)
 app.use('/api/reservations', reservationRoutes)
 
-/*
-setInterval(() => {
-    fetcher.fetchFeed()
-    cleaner.clean()
-}, 600000)
-*/
+priceListHandler.handle()
 
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static(__dirname + '/public/'))

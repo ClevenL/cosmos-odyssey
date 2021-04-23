@@ -1,7 +1,15 @@
 const { Schema, model } = require('mongoose')
 
 const PriceListSchema = new Schema({
-    priceLists: [Schema.Types.Mixed],
+    id: {
+        type: String,
+        required: true,
+    },
+    validUntil: {
+        type: String,
+        required: true,
+    },
+    legs: [Schema.Types.Mixed],
 })
 
 const PriceList = model('priceList', PriceListSchema)

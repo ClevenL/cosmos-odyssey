@@ -12,6 +12,7 @@ const ReservationSchema = new Schema({
     routes: [Schema.Types.Mixed],
     totalPrice: Number,
     totalTravelTime: Number,
+    priceListId: String,
     created: {
         type: Date,
         default: Date.now,

@@ -29,8 +29,8 @@ async function cleanDB() {
         if (reservations) reservations.forEach(async reservation => {
             if (reservation.priceListId == lastPriceList._id) {
                 try {
-                    const removed = await Reservation.findByIdAndDelete(reservation.priceListId)
-                    if (!removed) throw Error(`Reservation deleting:${id} Error`)
+                    const removed = await Reservation.findByIdAndDelete(reservation._id)
+                    if (!removed) throw Error(`Reservation deleting:${reservation._id} Error`)
                 } catch (error) {
                     console.log(error)
                 }

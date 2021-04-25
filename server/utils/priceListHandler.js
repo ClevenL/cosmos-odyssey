@@ -1,5 +1,6 @@
 const axios = require('axios')
 const PriceList = require('../models/PriceList')
+const Reservation = require('../models/Reservation')
 
 async function fetchPriceListFromAPI() {
     const response = await axios.get(`https://cosmos-odyssey.azurewebsites.net/api/v1.0/TravelPrices`)
@@ -12,6 +13,37 @@ async function getPriceListsFromDB(latest = true) {
     if (!priceLists) return false
     return latest ? priceLists[0] : priceLists
 }
+async function getReservationsFromDB() {
+    const reservations = await Reservation.find()
+    if (!reservations) return false
+    return reservations
+}
+
+// If there's over 15 pricelists, delete one
+async function cleanDB() {
+    const priceLists = await getPriceListsFromDB(false)
+    if (priceLists.length > 15) {
+        const lastPriceList = priceLists[priceLists.length - 1]
+        const reservations = await getReservationsFromDB()
+        // If there are reservations using the soon to be deleted pricelist, delete them
+        if (reservations) reservations.forEach(async reservation => {
+            if (reservation.priceListId == lastPriceList._id) {
+                try {
+                    const removed = await Reservation.findByIdAndDelete(reservation.priceListId)
+                    if (!removed) throw Error(`Reservation deleting:${id} Error`)
+                } catch (error) {
+                    console.log(error)
+                }
+            } 
+        })
+        try {
+            const removed = await PriceList.findByIdAndDelete(lastPriceList._id)
+            if (!removed) throw Error(`PriceList deleting:${id} Error`)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+}
 
 // Save a new pricelist
 async function saveNewPriceList() {
@@ -22,17 +54,7 @@ async function saveNewPriceList() {
     } catch (error) {
         console.log(error)
     }
-    // If there's over 15 pricelist, delete one
-    const priceLists = await getPriceListsFromDB(false)
-    if (priceLists.length > 15) {
-        const lastPriceList = priceLists[priceLists.length - 1]
-        try {
-            const removed = await PriceList.findByIdAndDelete(lastPriceList._id)
-            if (!removed) throw Error(`PriceList deleting:${id} Error`)
-        } catch (error) {
-            console.log(error)
-        }
-    }
+    await cleanDB()
 }
 
 // Main loop for checking pricelists

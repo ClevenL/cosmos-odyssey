@@ -67,7 +67,3 @@ For [Live Demo](https://safe-beyond-56735.herokuapp.com/) I used
 * [Heroku](https://www.heroku.com/) Cloud Application Platform
 
 For details about frontend see the [client submodule](https://github.com/ClevenL/cosmos-odyssey-client/tree/c821261e7496de273f54f481fecb82e30f70b357)
-
-## Thank you
-
-Uptime for providing an exciting project

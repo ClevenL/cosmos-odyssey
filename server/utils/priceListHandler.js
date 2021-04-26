@@ -74,10 +74,8 @@ exports.handle = async () => {
             this.handle()
         } else {
             const validTime = new Date(fetchedPriceList.validUntil).valueOf() - Date.now()
-            console.log(validTime)
             setTimeout(async () => {
                 await saveNewPriceList()
-                console.log("we are in a loop!!")
                 this.handle()
             }, validTime)
         }

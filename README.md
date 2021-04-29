@@ -57,7 +57,7 @@ In production the assets will be served by Express
 
 ## Useful Server API endpoints
 
-`GET /api/pricelists` - Displays all the saved pricelists 
+`GET /api/pricelists` - Displays all the saved pricelists  
 `GET /api/reservations` - Displays all the saved reservations
 
 ## Built With
